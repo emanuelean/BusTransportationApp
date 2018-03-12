@@ -1,2 +1,14 @@
 __pycache__/
 .*.swp
+*.exe
+*.exe.config
+*.pdb
+*.cache
+**/TemporaryGeneratedFile*
+*.lock
+
+BTA-CS/BTA-CS/obj
+BTA-CS/BTAServer/obj
+BTA-CS/BTAClient/obj
+
+BTA-CS/.vs/config/applicationhost.config
