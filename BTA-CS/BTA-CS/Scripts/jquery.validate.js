@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!
  * jQuery Validation Plugin v1.17.0
  *
@@ -16,6 +17,26 @@
 	}
 }(function( $ ) {
 
+=======
+/*!
+ * jQuery Validation Plugin v1.17.0
+ *
+ * https://jqueryvalidation.org/
+ *
+ * Copyright (c) 2017 Jörn Zaefferer
+ * Released under the MIT license
+ */
+(function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+		define( ["jquery"], factory );
+	} else if (typeof module === "object" && module.exports) {
+		module.exports = factory( require( "jquery" ) );
+	} else {
+		factory( jQuery );
+	}
+}(function( $ ) {
+
+>>>>>>> 0ff41a88fd0c2120c7a2f63d115129c2ac6fac94
 $.extend( $.fn, {
 
 	// https://jqueryvalidation.org/validate/
@@ -756,6 +777,7 @@ $.extend( $.validator, {
 			} else if (	typeof this.settings.normalizer === "function" ) {
 				normalizer = this.settings.normalizer;
 			}
+<<<<<<< HEAD
 
 			// If normalizer is defined, then call it to retreive the changed value instead
 			// of using the real one.
@@ -776,6 +798,28 @@ $.extend( $.validator, {
 				try {
 					result = $.validator.methods[ method ].call( this, val, element, rule.parameters );
 
+=======
+
+			// If normalizer is defined, then call it to retreive the changed value instead
+			// of using the real one.
+			// Note that `this` in the normalizer is `element`.
+			if ( normalizer ) {
+				val = normalizer.call( element, val );
+
+				if ( typeof val !== "string" ) {
+					throw new TypeError( "The normalizer should return a string value." );
+				}
+
+				// Delete the normalizer from rules to avoid treating it as a pre-defined method.
+				delete rules.normalizer;
+			}
+
+			for ( method in rules ) {
+				rule = { method: method, parameters: rules[ method ] };
+				try {
+					result = $.validator.methods[ method ].call( this, val, element, rule.parameters );
+
+>>>>>>> 0ff41a88fd0c2120c7a2f63d115129c2ac6fac94
 					// If a method indicates that the field is optional and therefore valid,
 					// don't mark it as valid when there are no other rules
 					if ( result === "dependency-mismatch" && rulesCount === 1 ) {
@@ -1505,6 +1549,7 @@ $.extend( $.validator, {
 			}
 
 			method = typeof method === "string" && method || "remote";
+<<<<<<< HEAD
 
 			var previous = this.previousValue( element, method ),
 				validator, data, optionDataString;
@@ -1515,6 +1560,18 @@ $.extend( $.validator, {
 			previous.originalMessage = previous.originalMessage || this.settings.messages[ element.name ][ method ];
 			this.settings.messages[ element.name ][ method ] = previous.message;
 
+=======
+
+			var previous = this.previousValue( element, method ),
+				validator, data, optionDataString;
+
+			if ( !this.settings.messages[ element.name ] ) {
+				this.settings.messages[ element.name ] = {};
+			}
+			previous.originalMessage = previous.originalMessage || this.settings.messages[ element.name ][ method ];
+			this.settings.messages[ element.name ][ method ] = previous.message;
+
+>>>>>>> 0ff41a88fd0c2120c7a2f63d115129c2ac6fac94
 			param = typeof param === "string" && { url: param } || param;
 			optionDataString = $.param( $.extend( { data: value }, param.data ) );
 			if ( previous.old === optionDataString ) {
@@ -1561,7 +1618,11 @@ $.extend( $.validator, {
 	}
 
 } );
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 0ff41a88fd0c2120c7a2f63d115129c2ac6fac94
 // Ajax mode: abort
 // usage: $.ajax({ mode: "abort"[, port: "uniqueport"]});
 // if mode:"abort" is used, the previous request on that port (port can be undefined) is aborted via XMLHttpRequest.abort()
@@ -1576,6 +1637,7 @@ if ( $.ajaxPrefilter ) {
 		if ( settings.mode === "abort" ) {
 			if ( pendingRequests[ port ] ) {
 				pendingRequests[ port ].abort();
+<<<<<<< HEAD
 			}
 			pendingRequests[ port ] = xhr;
 		}
@@ -1591,11 +1653,32 @@ if ( $.ajaxPrefilter ) {
 			if ( pendingRequests[ port ] ) {
 				pendingRequests[ port ].abort();
 			}
+=======
+			}
+			pendingRequests[ port ] = xhr;
+		}
+	} );
+} else {
+
+	// Proxy ajax
+	ajax = $.ajax;
+	$.ajax = function( settings ) {
+		var mode = ( "mode" in settings ? settings : $.ajaxSettings ).mode,
+			port = ( "port" in settings ? settings : $.ajaxSettings ).port;
+		if ( mode === "abort" ) {
+			if ( pendingRequests[ port ] ) {
+				pendingRequests[ port ].abort();
+			}
+>>>>>>> 0ff41a88fd0c2120c7a2f63d115129c2ac6fac94
 			pendingRequests[ port ] = ajax.apply( this, arguments );
 			return pendingRequests[ port ];
 		}
 		return ajax.apply( this, arguments );
 	};
 }
+<<<<<<< HEAD
 return $;
+=======
+return $;
+>>>>>>> 0ff41a88fd0c2120c7a2f63d115129c2ac6fac94
 }));
